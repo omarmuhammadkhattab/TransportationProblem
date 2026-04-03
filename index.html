@@ -5,92 +5,77 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Transportation Problem — Interactive Explainer</title>
 <style>
-:root {
-  --color-background-primary:#ffffff;--color-background-secondary:#f5f4ef;
-  --color-background-tertiary:#eeede8;--color-text-primary:#1a1a18;
-  --color-text-secondary:#5a5a54;--color-text-tertiary:#8a8a82;
-  --color-border-secondary:rgba(0,0,0,0.2);--color-border-tertiary:rgba(0,0,0,0.1);
-  --color-border-primary:rgba(0,0,0,0.3);
-  --border-radius-md:8px;--border-radius-lg:12px;
-  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  --font-mono:'Courier New',monospace;
+:root{
+  --bg1:#ffffff;--bg2:#f5f4ef;--bg3:#eeede8;
+  --tx1:#1a1a18;--tx2:#5a5a54;--tx3:#8a8a82;
+  --bd2:rgba(0,0,0,0.2);--bd3:rgba(0,0,0,0.1);--bd1:rgba(0,0,0,0.3);
+  --rmd:8px;--rlg:12px;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --mono:'Courier New',monospace;
 }
 @media(prefers-color-scheme:dark){:root{
-  --color-background-primary:#1a1a18;--color-background-secondary:#242420;
-  --color-background-tertiary:#2e2e2a;--color-text-primary:#ebebdf;
-  --color-text-secondary:#a0a096;--color-text-tertiary:#6e6e66;
-  --color-border-secondary:rgba(255,255,255,0.2);--color-border-tertiary:rgba(255,255,255,0.12);
-  --color-border-primary:rgba(255,255,255,0.3);
+  --bg1:#1a1a18;--bg2:#242420;--bg3:#2e2e2a;
+  --tx1:#ebebdf;--tx2:#a0a096;--tx3:#6e6e66;
+  --bd2:rgba(255,255,255,0.2);--bd3:rgba(255,255,255,0.12);--bd1:rgba(255,255,255,0.3);
 }}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:var(--font-sans);background:var(--color-background-tertiary);color:var(--color-text-primary);padding:16px;min-height:100vh}
-.app{max-width:760px;margin:0 auto}
+body{font-family:var(--sans);background:var(--bg3);color:var(--tx1);padding:16px;min-height:100vh}
+.app{max-width:780px;margin:0 auto}
 h1{font-size:18px;font-weight:500;margin-bottom:4px}
-.subtitle{font-size:13px;color:var(--color-text-secondary);margin-bottom:16px}
-.section{background:var(--color-background-primary);border-radius:var(--border-radius-lg);border:0.5px solid var(--color-border-tertiary);padding:16px;margin-bottom:16px}
-.section-title{font-size:15px;font-weight:500;margin-bottom:12px;padding-bottom:8px;border-bottom:0.5px solid var(--color-border-tertiary)}
-
-/* Tabs */
-.ttabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
-.ttab{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:5px 11px;font-size:12px;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-sans)}
-.ttab.on{background:var(--color-background-secondary);color:var(--color-text-primary);border-color:var(--color-border-primary);font-weight:500}
+.subtitle{font-size:13px;color:var(--tx2);margin-bottom:14px}
+.section{background:var(--bg1);border-radius:var(--rlg);border:0.5px solid var(--bd3);padding:16px;margin-bottom:14px}
+.stitle{font-size:14px;font-weight:500;margin-bottom:12px;padding-bottom:8px;border-bottom:0.5px solid var(--bd3)}
+.ttabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
+.ttab{background:none;border:0.5px solid var(--bd2);border-radius:var(--rmd);padding:5px 11px;font-size:12px;cursor:pointer;color:var(--tx2);font-family:var(--sans)}
+.ttab.on{background:var(--bg2);color:var(--tx1);border-color:var(--bd1);font-weight:500}
 .tpanel{display:none}.tpanel.on{display:block}
-
-/* Grid table */
-.tgrid{display:grid;gap:1px;background:var(--color-border-tertiary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);overflow:hidden;margin:10px 0;font-size:12px}
-.tgc{background:var(--color-background-primary);padding:7px 4px;text-align:center;min-height:50px;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.tgh{background:var(--color-background-secondary);font-weight:500;color:var(--color-text-secondary);font-size:11px;min-height:34px}
-.tgs{background:var(--color-background-tertiary);font-weight:500;font-size:12px}
-.cc{position:absolute;top:3px;right:4px;font-size:9px;color:var(--color-text-tertiary)}
+.pbar{display:flex;align-items:center;gap:8px;margin-bottom:8px;min-height:26px}
+.pbadge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500}
+.pbadge.pi{background:var(--bg2);color:var(--tx2);border:0.5px solid var(--bd2)}
+.pbadge.pm{background:#dbeafe;color:#1d4ed8;border:0.5px solid #93c5fd}
+@media(prefers-color-scheme:dark){.pbadge.pm{background:#1e3a5f;color:#93c5fd;border-color:#1e40af}}
+.pstep{font-size:11px;color:var(--tx3);margin-left:auto}
+.fbar{font-size:12px;font-family:var(--mono);color:var(--tx2);background:var(--bg2);padding:6px 11px;border-radius:var(--rmd);margin-bottom:8px;display:none}
+.tgrid{display:grid;gap:1px;background:var(--bd3);border:0.5px solid var(--bd2);border-radius:var(--rmd);overflow:hidden;margin:8px 0;font-size:12px}
+.tgc{background:var(--bg1);padding:6px 4px;text-align:center;min-height:50px;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px}
+.tgh{background:var(--bg2);font-weight:500;color:var(--tx2);font-size:11px;min-height:34px}
+.tgs{background:var(--bg3);font-weight:500;font-size:12px}
+.cc{position:absolute;top:3px;right:4px;font-size:9px;color:var(--tx3)}
 .ca{font-size:15px;font-weight:500;line-height:1}
-.xact{background:#fef3c7!important}.xdon{background:#d1fae5!important}.xout{opacity:0.35}
-@media(prefers-color-scheme:dark){.xact{background:#422006!important}.xdon{background:#022c22!important}}
-
-/* Method controls */
-.snote{font-size:12px;color:var(--color-text-secondary);padding:9px 12px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);border-left:2px solid var(--color-border-secondary);margin:8px 0;line-height:1.5;min-height:40px}
-.sctrl{display:flex;align-items:center;gap:6px;margin:6px 0}
-.smid{flex:1;text-align:center;font-size:11px;color:var(--color-text-tertiary)}
-.scost{text-align:right;font-size:12px;color:var(--color-text-secondary);margin-top:3px;min-height:18px}
-.cb{display:inline-block;padding:2px 8px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:12px;font-weight:500}
-.lede{font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:8px}
-button{background:none;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);padding:5px 12px;font-size:12px;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-sans)}
-button:hover{background:var(--color-background-secondary)}
-.sup{font-size:10px;color:var(--color-text-tertiary)}
-
-/* Overview cards */
-.card{background:var(--color-background-secondary);border-radius:var(--border-radius-lg);padding:11px 13px;margin:7px 0}
-.ctitle{font-size:13px;font-weight:500;margin-bottom:4px}
-.cbody{font-size:12px;color:var(--color-text-secondary);line-height:1.7}
-
-/* Compare */
-.cmpg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
-.cmpc{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;text-align:center}
-.cmpbest{border:1px solid #0d9488}
-.cmpn{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px}
-.cmpv{font-size:20px;font-weight:500}
-.msub{font-size:10px;color:var(--color-text-tertiary)}
-
-/* MODI section */
-.ph{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
-.plbl{font-size:13px;font-weight:500;flex:1}
-.pct{font-size:11px;color:var(--color-text-tertiary)}
-.piter{font-size:11px;padding:2px 8px;border-radius:20px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary)}
-.pfml{font-size:12px;font-family:var(--font-mono);color:var(--color-text-secondary);background:var(--color-background-secondary);padding:7px 12px;border-radius:var(--border-radius-md);margin-bottom:8px;line-height:1.5}
-.tgrid2{display:grid;grid-template-columns:56px repeat(4,1fr) 44px;gap:1px;background:var(--color-border-tertiary);border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);overflow:hidden;font-size:12px;margin:8px 0}
-.tgc2{background:var(--color-background-primary);padding:6px 4px;text-align:center;min-height:54px;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1px}
-.xent{background:#fef3c7!important}.xlp{background:#dbeafe!important}.xlm{background:#fee2e2!important}
-@media(prefers-color-scheme:dark){.xent{background:#422006!important}.xlp{background:#1e3a5f!important}.xlm{background:#4c1414!important}}
 .uvlbl{font-size:10px;font-weight:500;color:#0369a1;display:block}
 @media(prefers-color-scheme:dark){.uvlbl{color:#38bdf8}}
 .zval{font-size:12px;font-weight:500}
-.zpos{color:#b45309}.zneg{color:var(--color-text-tertiary)}
-.lbadge2{position:absolute;top:3px;left:3px;font-size:10px;font-weight:700;width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.lp2{background:#dbeafe;color:#1d4ed8}.lm2{background:#fee2e2;color:#b91c1c}
-@media(prefers-color-scheme:dark){.lp2{background:#1e3a5f;color:#93c5fd}.lm2{background:#4c1414;color:#fca5a5}}
-.tclabel{font-size:12px;color:var(--color-text-secondary);margin-top:4px;text-align:right;min-height:20px}
-.optbadge{display:inline-block;padding:1px 7px;background:#d1fae5;color:#065f46;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;margin-left:6px}
+.zpos{color:#b45309}.zneg{color:var(--tx3)}
+.lbadge{position:absolute;top:3px;left:3px;font-size:10px;font-weight:700;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.lp{background:#dbeafe;color:#1d4ed8}.lm{background:#fee2e2;color:#b91c1c}
+@media(prefers-color-scheme:dark){.lp{background:#1e3a5f;color:#93c5fd}.lm{background:#4c1414;color:#fca5a5}}
+.xact{background:#fef3c7!important}.xdon{background:#d1fae5!important}
+.xent{background:#fef3c7!important}.xlp{background:#dbeafe!important}.xlm{background:#fee2e2!important}
+.xout{opacity:0.35}
+@media(prefers-color-scheme:dark){
+  .xact{background:#422006!important}.xdon{background:#022c22!important}
+  .xent{background:#422006!important}.xlp{background:#1e3a5f!important}.xlm{background:#4c1414!important}
+}
+.snote{font-size:12px;color:var(--tx2);padding:9px 12px;background:var(--bg2);border-radius:var(--rmd);border-left:2px solid var(--bd2);margin:8px 0;line-height:1.5;min-height:38px}
+.sctrl{display:flex;align-items:center;gap:6px;margin:6px 0}
+.smid{flex:1;text-align:center;font-size:11px;color:var(--tx3);letter-spacing:1px}
+.scost{text-align:right;font-size:12px;color:var(--tx2);margin-top:3px;min-height:18px}
+.cb{display:inline-block;padding:2px 8px;background:var(--bg2);border:0.5px solid var(--bd2);border-radius:var(--rmd);font-size:12px;font-weight:500}
+.optbadge{display:inline-block;padding:1px 7px;background:#d1fae5;color:#065f46;border-radius:var(--rmd);font-size:11px;font-weight:500;margin-left:6px}
 @media(prefers-color-scheme:dark){.optbadge{background:#022c22;color:#6ee7b7}}
-.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--color-text-secondary);margin-top:8px;padding-top:8px;border-top:0.5px solid var(--color-border-tertiary)}
+button{background:none;border:0.5px solid var(--bd2);border-radius:var(--rmd);padding:5px 12px;font-size:12px;cursor:pointer;color:var(--tx2);font-family:var(--sans)}
+button:hover{background:var(--bg2)}
+.card{background:var(--bg2);border-radius:var(--rlg);padding:11px 13px;margin:7px 0}
+.ctitle{font-size:13px;font-weight:500;margin-bottom:4px}
+.cbody{font-size:12px;color:var(--tx2);line-height:1.7}
+.cmpg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
+.cmpc{background:var(--bg2);border-radius:var(--rmd);padding:10px;text-align:center}
+.cmpbest{border:1px solid #0d9488}
+.cmpn{font-size:11px;color:var(--tx2);margin-bottom:3px}
+.cmpv{font-size:20px;font-weight:500}
+.cmps{font-size:10px;color:var(--tx3);margin-top:2px}
+.sup{font-size:10px;color:var(--tx3)}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--tx2);margin-top:8px;padding-top:8px;border-top:0.5px solid var(--bd3)}
 .li{display:flex;align-items:center;gap:4px}
 .lb{width:11px;height:11px;border-radius:2px}
 </style>
@@ -98,224 +83,322 @@ button:hover{background:var(--color-background-secondary)}
 <body>
 <div class="app">
 <h1>Transportation Problem</h1>
-<p class="subtitle">Interactive explainer — Initial solution methods &amp; MODI improvement</p>
+<p class="subtitle">Pick a method below, step through the initial allocation, then follow the MODI improvement to the optimal answer.</p>
 
-<!-- INITIAL SOLUTION SECTION -->
 <div class="section">
-<div class="section-title">Initial basic feasible solution</div>
-
+<div class="stitle">Methods &amp; MODI improvement</div>
 <div class="ttabs">
   <button class="ttab on" onclick="doTab(this,'overview')">Overview</button>
-  <button class="ttab" onclick="doTab(this,'nw')">1. NW corner</button>
-  <button class="ttab" onclick="doTab(this,'lc')">2. Least cost</button>
-  <button class="ttab" onclick="doTab(this,'vam')">3. Vogel's</button>
+  <button class="ttab" onclick="doTab(this,'nw')">NW corner</button>
+  <button class="ttab" onclick="doTab(this,'lc')">Least cost</button>
+  <button class="ttab" onclick="doTab(this,'vam')">Vogel's</button>
   <button class="ttab" onclick="doTab(this,'compare')">Compare</button>
 </div>
 
 <div id="panel-overview" class="tpanel on">
-  <div class="card"><div class="ctitle">The transportation problem</div><div class="cbody">Minimize the total shipping cost from m sources (supply) to n destinations (demand). Each route (i→j) carries Xᵢⱼ units at cost Cᵢⱼ per unit. Objective: Minimize TC = Σ Σ Cᵢⱼ·Xᵢⱼ.</div></div>
-  <div class="card"><div class="ctitle">Balance &amp; basic variables</div><div class="cbody">Total Supply must equal Total Demand (add a dummy row or column if not). A valid solution needs exactly m+n−1 allocated cells. Fewer = degenerate (insert a zero-value allocation).</div></div>
-  <div class="card"><div class="ctitle">The three methods</div><div class="cbody"><b>NW Corner</b> — fill from top-left, ignores costs, worst result.<br><b>Least Cost</b> — always pick the cheapest available cell, better result.<br><b>Vogel's</b> — use opportunity-cost penalties, usually best initial result.</div></div>
+  <div class="card"><div class="ctitle">What is the transportation problem?</div><div class="cbody">Minimize total shipping cost from m sources (supply Sᵢ) to n destinations (demand Dⱼ). Decision variables Xᵢⱼ = units shipped on route i→j at cost Cᵢⱼ. Objective: Minimize TC = ΣΣ Cᵢⱼ·Xᵢⱼ subject to all supply and demand constraints and Xᵢⱼ ≥ 0.</div></div>
+  <div class="card"><div class="ctitle">Balance &amp; basic variables</div><div class="cbody">Total Supply must equal Total Demand — add a dummy row or column with zero cost if not. A valid solution needs exactly m+n−1 allocated cells. Fewer allocations = degenerate (insert a zero-value allocation to compensate).</div></div>
+  <div class="card"><div class="ctitle">Phase 1 — Initial solution (choose a method)</div><div class="cbody"><b>NW Corner:</b> fill from top-left, ignores costs — gives the worst initial result.<br><b>Least Cost:</b> always fill the cheapest available cell — better result.<br><b>Vogel's:</b> use opportunity-cost penalties to guide allocations — usually best.</div></div>
+  <div class="card"><div class="ctitle">Phase 2 — MODI / UV improvement (applied to whichever method you chose)</div><div class="cbody">1. Set U₁=0. For each allocated cell, solve Cᵢⱼ=Uᵢ+Vⱼ to find all U and V values.<br>2. For each empty cell compute Zᵢⱼ=Uᵢ+Vⱼ−Cᵢⱼ. If all Z≤0 → current solution is optimal.<br>3. Otherwise: enter the cell with the most positive Z, trace a closed loop (+→−→+→...) through allocated cells, transfer the minimum (−) quantity. Repeat.<br><br>All three methods converge to the same optimal answer — a better initial solution just needs fewer MODI iterations.</div></div>
 </div>
 
 <div id="panel-nw" class="tpanel">
-  <div class="lede">Start top-left. Allocate min(supply, demand). Cross out exhausted row or column. Move to adjacent cell.</div>
+  <div class="pbar" id="pbar-nw"></div>
+  <div class="fbar" id="fbar-nw"></div>
   <div id="tbl-nw"></div>
   <div class="snote" id="snote-nw"></div>
-  <div class="sctrl"><button onclick="doStep('nw',-1)">← Prev</button><span class="smid" id="slbl-nw"></span><button onclick="doStep('nw',1)">Next →</button></div>
+  <div class="sctrl"><button onclick="doStep('nw',-1)">&#8592; Prev</button><span class="smid" id="slbl-nw"></span><button onclick="doStep('nw',1)">Next &#8594;</button></div>
   <div class="scost" id="scost-nw"></div>
+  <div class="legend" id="leg-nw"></div>
 </div>
 
 <div id="panel-lc" class="tpanel">
-  <div class="lede">Scan entire table for the lowest cost. Allocate maximum there, eliminate that row or column, repeat.</div>
+  <div class="pbar" id="pbar-lc"></div>
+  <div class="fbar" id="fbar-lc"></div>
   <div id="tbl-lc"></div>
   <div class="snote" id="snote-lc"></div>
-  <div class="sctrl"><button onclick="doStep('lc',-1)">← Prev</button><span class="smid" id="slbl-lc"></span><button onclick="doStep('lc',1)">Next →</button></div>
+  <div class="sctrl"><button onclick="doStep('lc',-1)">&#8592; Prev</button><span class="smid" id="slbl-lc"></span><button onclick="doStep('lc',1)">Next &#8594;</button></div>
   <div class="scost" id="scost-lc"></div>
+  <div class="legend" id="leg-lc"></div>
 </div>
 
 <div id="panel-vam" class="tpanel">
-  <div class="lede">Compute penalty = (2nd min − min) per row and column. Allocate in the cheapest cell of the highest-penalty row/column. Recalculate and repeat.</div>
+  <div class="pbar" id="pbar-vam"></div>
+  <div class="fbar" id="fbar-vam"></div>
   <div id="tbl-vam"></div>
   <div class="snote" id="snote-vam"></div>
-  <div class="sctrl"><button onclick="doStep('vam',-1)">← Prev</button><span class="smid" id="slbl-vam"></span><button onclick="doStep('vam',1)">Next →</button></div>
+  <div class="sctrl"><button onclick="doStep('vam',-1)">&#8592; Prev</button><span class="smid" id="slbl-vam"></span><button onclick="doStep('vam',1)">Next &#8594;</button></div>
   <div class="scost" id="scost-vam"></div>
+  <div class="legend" id="leg-vam"></div>
 </div>
 
 <div id="panel-compare" class="tpanel">
-  <div class="card"><div class="ctitle">Example (3×4, balanced — total = 50)</div><div class="cbody">Sources: E(15), F(25), G(10) · Destinations: A(5), B(15), C(15), D(15)</div></div>
+  <div class="card"><div class="ctitle">Example: 3 sources x 4 destinations (balanced, total = 50)</div><div class="cbody">Sources: E(15), F(25), G(10) &nbsp;&#183;&nbsp; Destinations: A(5), B(15), C(15), D(15)</div></div>
   <div class="cmpg">
-    <div class="cmpc"><div class="cmpn">NW corner</div><div class="cmpv">520</div><div class="msub">6 allocations</div></div>
-    <div class="cmpc cmpbest"><div class="cmpn">Least cost</div><div class="cmpv" style="color:#0d9488">475</div><div class="msub">6 allocations ✓</div></div>
-    <div class="cmpc cmpbest"><div class="cmpn">Vogel's</div><div class="cmpv" style="color:#0d9488">475</div><div class="msub">6 allocations ✓</div></div>
+    <div class="cmpc">
+      <div class="cmpn">NW corner</div>
+      <div class="cmpv">520</div><div class="cmps">initial TC</div>
+      <div class="cmps" style="margin-top:6px;color:#b45309">2 MODI iterations</div>
+      <div class="cmpv" style="font-size:16px;margin-top:4px;color:#0d9488">435</div>
+      <div class="cmps">optimal TC</div>
+    </div>
+    <div class="cmpc cmpbest">
+      <div class="cmpn">Least cost</div>
+      <div class="cmpv" style="color:#0d9488">475</div><div class="cmps">initial TC</div>
+      <div class="cmps" style="margin-top:6px;color:#059669">1 MODI iteration</div>
+      <div class="cmpv" style="font-size:16px;margin-top:4px;color:#0d9488">435</div>
+      <div class="cmps">optimal TC</div>
+    </div>
+    <div class="cmpc cmpbest">
+      <div class="cmpn">Vogel's</div>
+      <div class="cmpv" style="color:#0d9488">475</div><div class="cmps">initial TC</div>
+      <div class="cmps" style="margin-top:6px;color:#059669">1 MODI iteration</div>
+      <div class="cmpv" style="font-size:16px;margin-top:4px;color:#0d9488">435</div>
+      <div class="cmps">optimal TC</div>
+    </div>
   </div>
-  <div class="card"><div class="ctitle">Next step</div><div class="cbody">All three methods give an initial solution only. Use the MODI / UV method (below) to test optimality and improve further.</div></div>
-</div>
-</div><!-- end initial section -->
-
-<!-- MODI SECTION -->
-<div class="section">
-<div class="section-title">Solution improvement — MODI / UV method</div>
-<div id="modi-root"></div>
-<div class="legend">
-  <span class="li"><span class="lb" style="background:#d1fae5;border:0.5px solid #059669"></span>Allocated</span>
-  <span class="li"><span class="lb" style="background:#fef3c7;border:0.5px solid #d97706"></span>Entering cell</span>
-  <span class="li"><span class="lb" style="background:#dbeafe;border:0.5px solid #3b82f6"></span>Loop (+)</span>
-  <span class="li"><span class="lb" style="background:#fee2e2;border:0.5px solid #ef4444"></span>Loop (−)</span>
-  <span class="li" style="color:#b45309">▪ Positive Z = can improve</span>
-  <span class="li" style="color:var(--color-text-tertiary)">▪ Negative Z = fine</span>
+  <div class="card"><div class="ctitle">Key takeaway</div><div class="cbody">All three methods reach the same optimal TC = 435. The difference is how many MODI iterations are needed to get there — NW Corner requires 2, while Least Cost and Vogel's require only 1. The optimal routes are: E&#8594;B(5), E&#8594;D(10), F&#8594;B(10), F&#8594;C(15), G&#8594;A(5), G&#8594;D(5).</div></div>
 </div>
 </div>
 
-</div><!-- end app -->
 <script>
-/* ───────── SHARED DATA ───────── */
-const C=[[10,2,20,11],[12,7,9,20],[4,14,16,18]];
-const SRC=['E','F','G'],DST=['A','B','C','D'];
+var C=[[10,2,20,11],[12,7,9,20],[4,14,16,18]];
+var SRC=['E','F','G'],DST=['A','B','C','D'],SUP=[15,25,10],DEM=[5,15,15,15];
 
-/* ───────── INITIAL SOLUTION METHODS ───────── */
-const M={
-  nw:{steps:[
-    {a:{},act:null,sup:[15,25,10],dem:[5,15,15,15],cr:[],cc:[],note:'Blank table. Fill from top-left. Need m+n−1=6 allocations.',cost:null},
-    {a:{'0,0':5},act:[0,0],sup:[10,25,10],dem:[0,15,15,15],cr:[],cc:[0],note:'X(E,A)=min(15,5)=5. Column A satisfied → close it.',cost:50},
-    {a:{'0,0':5,'0,1':10},act:[0,1],sup:[0,25,10],dem:[0,5,15,15],cr:[0],cc:[0],note:'X(E,B)=min(10,15)=10. Row E exhausted → close it.',cost:70},
-    {a:{'0,0':5,'0,1':10,'1,1':5},act:[1,1],sup:[0,20,10],dem:[0,0,15,15],cr:[0],cc:[0,1],note:'X(F,B)=min(25,5)=5. Column B satisfied → close it.',cost:105},
-    {a:{'0,0':5,'0,1':10,'1,1':5,'1,2':15},act:[1,2],sup:[0,5,10],dem:[0,0,0,15],cr:[0],cc:[0,1,2],note:'X(F,C)=min(20,15)=15. Column C satisfied → close it.',cost:240},
-    {a:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5},act:[1,3],sup:[0,0,10],dem:[0,0,0,10],cr:[0,1],cc:[0,1,2],note:'X(F,D)=min(5,15)=5. Row F exhausted → close it.',cost:340},
-    {a:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},act:null,sup:[0,0,0],dem:[0,0,0,0],cr:[0,1,2],cc:[0,1,2,3],note:'X(G,D)=10. Done! TC=5×10+10×2+5×7+15×9+5×20+10×18=520.',cost:520,done:1},
-  ]},
-  lc:{steps:[
-    {a:{},act:null,sup:[15,25,10],dem:[5,15,15,15],cr:[],cc:[],note:'Blank table. Scan for minimum cost. Need 6 allocations.',cost:null},
-    {a:{'0,1':15},act:[0,1],sup:[0,25,10],dem:[5,0,15,15],cr:[0],cc:[],note:'Min cost=2 at (E,B). Allocate min(15,15)=15. Row E exhausted.',cost:30},
-    {a:{'0,1':15,'2,0':5},act:[2,0],sup:[0,25,5],dem:[0,0,15,15],cr:[0],cc:[0],note:'Next min=4 at (G,A). Allocate min(10,5)=5. Column A satisfied.',cost:50},
-    {a:{'0,1':15,'2,0':5,'1,2':15},act:[1,2],sup:[0,10,5],dem:[0,0,0,15],cr:[0],cc:[0,2],note:'Next min=9 at (F,C). Allocate min(25,15)=15. Column C satisfied.',cost:185},
-    {a:{'0,1':15,'2,0':5,'1,2':15,'1,1':0},act:[1,1],sup:[0,10,5],dem:[0,0,0,15],cr:[0],cc:[0,1,2],note:'Degenerate: assign 0 to (F,B) to maintain 6 basic variables. Close col B.',cost:185},
-    {a:{'0,1':15,'2,0':5,'1,2':15,'1,1':0,'2,3':5},act:[2,3],sup:[0,10,0],dem:[0,0,0,10],cr:[0,2],cc:[0,1,2],note:'Next min=18 at (G,D). Allocate min(5,15)=5. Row G exhausted.',cost:275},
-    {a:{'0,1':15,'2,0':5,'1,2':15,'1,1':0,'2,3':5,'1,3':10},act:null,sup:[0,0,0],dem:[0,0,0,0],cr:[0,1,2],cc:[0,1,2,3],note:'(F,D)=10. Done! TC=15×2+5×4+15×9+0×7+5×18+10×20=475.',cost:475,done:1},
-  ]},
-  vam:{steps:[
-    {a:{},act:null,sup:[15,25,10],dem:[5,15,15,15],cr:[],cc:[],rp:[8,2,10],cp:[6,5,7,7],note:'Penalties: E=10−2=8, F=9−7=2, G=14−4=10. ColA=6,B=5,C=7,D=7.',cost:null},
-    {a:{'2,0':5},act:[2,0],sup:[15,25,5],dem:[0,15,15,15],cr:[],cc:[0],rp:[9,2,2],cp:[null,5,7,7],note:'Max penalty=G(10). Cheapest in G: (G,A)=4. Allocate 5. Close col A.',cost:20},
-    {a:{'2,0':5,'0,1':15},act:[0,1],sup:[0,25,5],dem:[0,0,15,15],cr:[0],cc:[0,1],rp:[null,11,2],cp:[null,null,7,2],note:'Max penalty=E(9). Cheapest in E: (E,B)=2. Allocate 15. Close row E.',cost:50},
-    {a:{'2,0':5,'0,1':15,'1,1':0},act:[1,1],sup:[0,25,5],dem:[0,0,15,15],cr:[0],cc:[0,1],rp:[null,11,2],cp:[null,null,7,2],note:'Penalty tie B=7, C=7. Choose B. (F,B)=0 degenerate. Close col B.',cost:50},
-    {a:{'2,0':5,'0,1':15,'1,1':0,'1,2':15},act:[1,2],sup:[0,10,5],dem:[0,0,0,15],cr:[0],cc:[0,1,2],rp:[null,null,null],cp:[null,null,null,2],note:'Max penalty=F(11). Cheapest in F: (F,C)=9. Allocate 15. Close col C.',cost:185},
-    {a:{'2,0':5,'0,1':15,'1,1':0,'1,2':15,'2,3':5},act:[2,3],sup:[0,10,0],dem:[0,0,0,10],cr:[0,2],cc:[0,1,2],rp:[null,null,null],cp:[null,null,null,null],note:'Only col D remains. (G,D)=18. Allocate 5. Row G exhausted.',cost:275},
-    {a:{'2,0':5,'0,1':15,'1,1':0,'1,2':15,'2,3':5,'1,3':10},act:null,sup:[0,0,0],dem:[0,0,0,0],cr:[0,1,2],cc:[0,1,2,3],rp:[null,null,null],cp:[null,null,null,null],note:'(F,D)=10. Done! TC=5×4+15×2+0×7+15×9+5×18+10×20=475.',cost:475,done:1},
-  ]}
+var modiFrom475=[
+  {phase:'modi',iter:'MODI \u2014 Iteration 1',fml:'C\u1d62\u2c7c = U\u1d62 + V\u2c7c for allocated cells. Set U\u2081 = 0.',
+   alloc:{'0,1':15,'2,0':5,'1,2':15,'1,1':0,'2,3':5,'1,3':10},
+   U:[0,5,3],V:[1,2,4,15],Zv:{},loop:{},enter:null,tc:475,
+   note:'Set U\u2081=0. Solve: V\u2082=2 (E,B), U\u2082=5 (F,B), V\u2083=4 (F,C), V\u2084=15 (F,D), U\u2083=3 (G,D: U\u2083+15=18), V\u2081=1 (G,A: 3+V\u2081=4).'},
+  {phase:'modi',iter:'MODI \u2014 Iteration 1',fml:'Z\u1d62\u2c7c = U\u1d62 + V\u2c7c \u2212 C\u1d62\u2c7c for empty cells. Positive Z = cost can be reduced.',
+   alloc:{'0,1':15,'2,0':5,'1,2':15,'1,1':0,'2,3':5,'1,3':10},
+   U:[0,5,3],V:[1,2,4,15],Zv:{'0,0':-9,'0,2':-16,'0,3':4,'1,0':-6,'2,1':-9,'2,2':-9},
+   loop:{},enter:[0,3],tc:475,
+   note:'Z values: (E,A)=\u22129, (E,C)=\u221216, (E,D)=+4\u2605, (F,A)=\u22126, (G,B)=\u22129, (G,C)=\u22129. Only (E,D) is positive \u2192 entering variable.'},
+  {phase:'modi',iter:'MODI \u2014 Iteration 1',fml:'Transfer = min at (\u2212) cells = min(10, 15) = 10 units',
+   alloc:{'0,1':15,'2,0':5,'1,2':15,'1,1':0,'2,3':5,'1,3':10},
+   U:[0,5,3],V:[1,2,4,15],Zv:{'0,0':-9,'0,2':-16,'0,3':4,'1,0':-6,'2,1':-9,'2,2':-9},
+   loop:{'0,3':'+','1,3':'-','1,1':'+','0,1':'-'},enter:[0,3],xfer:10,tc:475,
+   note:'Loop: (E,D)\u207a\u2192(F,D)\u207b\u2192(F,B)\u207a\u2192(E,B)\u207b. Transfer 10 units. Leaving cell: (F,D).'}
+];
+
+var optStep={phase:'modi',iter:'MODI \u2014 Optimal \u2713',fml:'TC = 5\u00d72 + 10\u00d711 + 10\u00d77 + 15\u00d79 + 5\u00d74 + 5\u00d718 = 435',
+  alloc:{'0,1':5,'0,3':10,'1,1':10,'1,2':15,'2,0':5,'2,3':5},
+  U:[0,5,7],V:[-3,2,4,11],Zv:{'0,0':-13,'0,2':-16,'1,0':-10,'1,3':-4,'2,1':-5,'2,2':-5},
+  loop:{},enter:null,tc:435,optimal:true};
+
+var M={
+  nw:{
+    lede:'Start at the top-left cell. Allocate min(supply, demand). Cross out the exhausted row or column and move to the adjacent cell. After 6 allocations, MODI finds the optimal solution.',
+    steps:[
+      {phase:'initial',a:{},act:null,sup:[15,25,10],dem:[5,15,15,15],cr:[],cc:[],note:'Blank table. Start top-left. Need m+n\u22121=6 allocations.',cost:null},
+      {phase:'initial',a:{'0,0':5},act:[0,0],sup:[10,25,10],dem:[0,15,15,15],cr:[],cc:[0],note:'X(E,A)=min(15,5)=5. Column A satisfied \u2192 close it. Move right.',cost:50},
+      {phase:'initial',a:{'0,0':5,'0,1':10},act:[0,1],sup:[0,25,10],dem:[0,5,15,15],cr:[0],cc:[0],note:'X(E,B)=min(10,15)=10. Row E exhausted \u2192 close it. Move down.',cost:70},
+      {phase:'initial',a:{'0,0':5,'0,1':10,'1,1':5},act:[1,1],sup:[0,20,10],dem:[0,0,15,15],cr:[0],cc:[0,1],note:'X(F,B)=min(25,5)=5. Column B satisfied \u2192 close it. Move right.',cost:105},
+      {phase:'initial',a:{'0,0':5,'0,1':10,'1,1':5,'1,2':15},act:[1,2],sup:[0,5,10],dem:[0,0,0,15],cr:[0],cc:[0,1,2],note:'X(F,C)=min(20,15)=15. Column C satisfied \u2192 close it. Move right.',cost:240},
+      {phase:'initial',a:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5},act:[1,3],sup:[0,0,10],dem:[0,0,0,10],cr:[0,1],cc:[0,1,2],note:'X(F,D)=min(5,15)=5. Row F exhausted \u2192 close it. Move down.',cost:340},
+      {phase:'initial',a:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},act:null,sup:[0,0,0],dem:[0,0,0,0],cr:[0,1,2],cc:[0,1,2,3],note:'X(G,D)=10. Initial solution done! TC=520. Press Next to begin MODI improvement \u2192',cost:520,done:1},
+      {phase:'modi',iter:'MODI \u2014 Iteration 1',fml:'C\u1d62\u2c7c = U\u1d62 + V\u2c7c for allocated cells. Set U\u2081 = 0.',
+       alloc:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},
+       U:[0,5,3],V:[10,2,4,15],Zv:{},loop:{},enter:null,tc:520,
+       note:'Set U\u2081=0. Solve C\u1d62\u2c7c=U\u1d62+V\u2c7c for each allocated cell: V\u2081=10, V\u2082=2, U\u2082=5, V\u2083=4, V\u2084=15, U\u2083=3.'},
+      {phase:'modi',iter:'MODI \u2014 Iteration 1',fml:'Z\u1d62\u2c7c = U\u1d62 + V\u2c7c \u2212 C\u1d62\u2c7c for empty cells. Positive Z = cost can be reduced.',
+       alloc:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},
+       U:[0,5,3],V:[10,2,4,15],Zv:{'0,2':-16,'0,3':4,'1,0':3,'2,0':9,'2,1':-9,'2,2':-9},
+       loop:{},enter:[2,0],tc:520,
+       note:'Z: (E,C)=\u221216, (E,D)=+4, (F,A)=+3, (G,A)=+9\u2605, (G,B)=\u22129, (G,C)=\u22129. Max Z=+9 at (G,A) \u2192 entering variable.'},
+      {phase:'modi',iter:'MODI \u2014 Iteration 1',fml:'Transfer = min at (\u2212) cells = min(5, 5, 10) = 5 units',
+       alloc:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},
+       U:[0,5,3],V:[10,2,4,15],Zv:{'0,2':-16,'0,3':4,'1,0':3,'2,0':9,'2,1':-9,'2,2':-9},
+       loop:{'2,0':'+','0,0':'-','0,1':'+','1,1':'-','1,3':'+','2,3':'-'},enter:[2,0],xfer:5,tc:520,
+       note:'Loop: (G,A)\u207a\u2192(E,A)\u207b\u2192(E,B)\u207a\u2192(F,B)\u207b\u2192(F,D)\u207a\u2192(G,D)\u207b. Transfer 5. Leaving: (E,A).'},
+      {phase:'modi',iter:'MODI \u2014 After Iteration 1',fml:'TC = 15\u00d72 + 0\u00d77 + 15\u00d79 + 10\u00d720 + 5\u00d74 + 5\u00d718 = 475',
+       alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},
+       U:[null,null,null],V:[null,null,null,null],Zv:{},loop:{},enter:null,tc:475,
+       note:'New allocations: (E,B)=15, (F,B)=0 (degenerate, kept for m+n\u22121=6), (F,C)=15, (F,D)=10, (G,A)=5, (G,D)=5. TC=475. Run MODI again.'},
+      {phase:'modi',iter:'MODI \u2014 Iteration 2',fml:'C\u1d62\u2c7c = U\u1d62 + V\u2c7c \u2014 recalculate with new allocations. Set U\u2081 = 0.',
+       alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},
+       U:[0,5,3],V:[1,2,4,15],Zv:{},loop:{},enter:null,tc:475,
+       note:'New UV: V\u2082=2, U\u2082=5, V\u2083=4, V\u2084=15, U\u2083=3, V\u2081=1 (G,A: 3+V\u2081=4). V\u2081 changed 10\u21921.'},
+      {phase:'modi',iter:'MODI \u2014 Iteration 2',fml:'Z\u1d62\u2c7c = U\u1d62 + V\u2c7c \u2212 C\u1d62\u2c7c for empty cells.',
+       alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},
+       U:[0,5,3],V:[1,2,4,15],Zv:{'0,0':-9,'0,2':-16,'0,3':4,'1,0':-6,'2,1':-9,'2,2':-9},
+       loop:{},enter:[0,3],tc:475,
+       note:'Only (E,D): Z=0+15\u221211=+4 is positive \u2192 entering variable for iteration 2.'},
+      {phase:'modi',iter:'MODI \u2014 Iteration 2',fml:'Transfer = min at (\u2212) cells = min(10, 15) = 10 units',
+       alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},
+       U:[0,5,3],V:[1,2,4,15],Zv:{'0,0':-9,'0,2':-16,'0,3':4,'1,0':-6,'2,1':-9,'2,2':-9},
+       loop:{'0,3':'+','1,3':'-','1,1':'+','0,1':'-'},enter:[0,3],xfer:10,tc:475,
+       note:'Loop: (E,D)\u207a\u2192(F,D)\u207b\u2192(F,B)\u207a\u2192(E,B)\u207b. Transfer 10. Leaving: (F,D).'},
+      Object.assign({},optStep,{note:'All Z\u22640 \u2014 Optimal! TC=435. 2 MODI iterations from NW Corner (TC=520).'})
+    ]
+  },
+  lc:{
+    lede:'Scan the entire table for the globally lowest cost. Allocate as much as possible there, close that row or column, and repeat. Then MODI optimizes the result.',
+    steps:[
+      {phase:'initial',a:{},act:null,sup:[15,25,10],dem:[5,15,15,15],cr:[],cc:[],note:'Blank table. Scan all cells for minimum cost. Need 6 allocations.',cost:null},
+      {phase:'initial',a:{'0,1':15},act:[0,1],sup:[0,25,10],dem:[5,0,15,15],cr:[0],cc:[],note:'Min cost=2 at (E,B). Allocate min(15,15)=15. Row E exhausted \u2192 close it.',cost:30},
+      {phase:'initial',a:{'0,1':15,'2,0':5},act:[2,0],sup:[0,25,5],dem:[0,0,15,15],cr:[0],cc:[0],note:'Next min=4 at (G,A). Allocate min(10,5)=5. Column A satisfied \u2192 close it.',cost:50},
+      {phase:'initial',a:{'0,1':15,'2,0':5,'1,2':15},act:[1,2],sup:[0,10,5],dem:[0,0,0,15],cr:[0],cc:[0,2],note:'Next min=9 at (F,C). Allocate min(25,15)=15. Column C satisfied \u2192 close it.',cost:185},
+      {phase:'initial',a:{'0,1':15,'2,0':5,'1,2':15,'1,1':0},act:[1,1],sup:[0,10,5],dem:[0,0,0,15],cr:[0],cc:[0,1,2],note:'Degenerate: assign 0 to (F,B) to maintain m+n\u22121=6 basic variables. Close column B.',cost:185},
+      {phase:'initial',a:{'0,1':15,'2,0':5,'1,2':15,'1,1':0,'2,3':5},act:[2,3],sup:[0,10,0],dem:[0,0,0,10],cr:[0,2],cc:[0,1,2],note:'Next min=18 at (G,D). Allocate min(5,15)=5. Row G exhausted \u2192 close it.',cost:275},
+      {phase:'initial',a:{'0,1':15,'2,0':5,'1,2':15,'1,1':0,'2,3':5,'1,3':10},act:null,sup:[0,0,0],dem:[0,0,0,0],cr:[0,1,2],cc:[0,1,2,3],note:'(F,D)=10. Initial solution done! TC=475. Press Next to begin MODI \u2192',cost:475,done:1},
+      modiFrom475[0],modiFrom475[1],modiFrom475[2],
+      Object.assign({},optStep,{note:'All Z\u22640 \u2014 Optimal! TC=435. Only 1 MODI iteration \u2014 Least Cost gave a much better start.'})
+    ]
+  },
+  vam:{
+    lede:'Compute a penalty (2nd-smallest minus smallest cost) for each row and column. Allocate in the cheapest cell of the highest-penalty row or column. Recalculate and repeat. Then MODI optimizes.',
+    steps:[
+      {phase:'initial',a:{},act:null,sup:[15,25,10],dem:[5,15,15,15],cr:[],cc:[],rp:[8,2,10],cp:[6,5,7,7],note:'Penalties: E=10\u22122=8, F=9\u22127=2, G=14\u22124=10. Col A=6, B=5, C=7, D=7.',cost:null},
+      {phase:'initial',a:{'2,0':5},act:[2,0],sup:[15,25,5],dem:[0,15,15,15],cr:[],cc:[0],rp:[9,2,2],cp:[null,5,7,7],note:'Max penalty=G(10). Cheapest in G: (G,A) cost=4. Allocate min(10,5)=5. Close col A. Recalculate.',cost:20},
+      {phase:'initial',a:{'2,0':5,'0,1':15},act:[0,1],sup:[0,25,5],dem:[0,0,15,15],cr:[0],cc:[0,1],rp:[null,11,2],cp:[null,null,7,2],note:'Max penalty=E(9). Cheapest in E: (E,B) cost=2. Allocate min(15,15)=15. Close row E.',cost:50},
+      {phase:'initial',a:{'2,0':5,'0,1':15,'1,1':0},act:[1,1],sup:[0,25,5],dem:[0,0,15,15],cr:[0],cc:[0,1],rp:[null,11,2],cp:[null,null,7,2],note:'Penalty tie B=7, C=7. Choose B. Only F remains: (F,B)=0 degenerate. Close col B.',cost:50},
+      {phase:'initial',a:{'2,0':5,'0,1':15,'1,1':0,'1,2':15},act:[1,2],sup:[0,10,5],dem:[0,0,0,15],cr:[0],cc:[0,1,2],rp:[null,null,null],cp:[null,null,null,2],note:'Max penalty=F(11). Cheapest in F: (F,C) cost=9. Allocate min(25,15)=15. Close col C.',cost:185},
+      {phase:'initial',a:{'2,0':5,'0,1':15,'1,1':0,'1,2':15,'2,3':5},act:[2,3],sup:[0,10,0],dem:[0,0,0,10],cr:[0,2],cc:[0,1,2],rp:[null,null,null],cp:[null,null,null,null],note:'Only col D remains. (G,D) cost=18. Allocate min(5,10)=5. Row G exhausted.',cost:275},
+      {phase:'initial',a:{'2,0':5,'0,1':15,'1,1':0,'1,2':15,'2,3':5,'1,3':10},act:null,sup:[0,0,0],dem:[0,0,0,0],cr:[0,1,2],cc:[0,1,2,3],rp:[null,null,null],cp:[null,null,null,null],note:'(F,D)=10. Initial solution done! TC=475. Press Next to begin MODI \u2192',cost:475,done:1},
+      modiFrom475[0],modiFrom475[1],modiFrom475[2],
+      Object.assign({},optStep,{note:"All Z\u22640 \u2014 Optimal! TC=435. Only 1 MODI iteration \u2014 Vogel's gave the best possible start."})
+    ]
+  }
 };
-const ST={nw:0,lc:0,vam:0};
+
+var ST={nw:0,lc:0,vam:0};
 
 function doTab(btn,id){
-  document.querySelectorAll('.ttab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.ttab').forEach(function(b){b.classList.remove('on');});
   btn.classList.add('on');
-  document.querySelectorAll('.tpanel').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tpanel').forEach(function(p){p.classList.remove('on');});
   document.getElementById('panel-'+id).classList.add('on');
-  if(M[id]) drawMethod(id);
+  if(M[id]) draw(id);
 }
 
 function doStep(id,d){
-  ST[id]=Math.max(0,Math.min(M[id].steps.length-1,ST[id]+d));
-  drawMethod(id);
+  var m=M[id];
+  ST[id]=Math.max(0,Math.min(m.steps.length-1,ST[id]+d));
+  draw(id);
 }
 
-function drawMethod(id){
-  const s=M[id].steps[ST[id]];
-  const isV=id==='vam',hasPen=isV&&s.rp;
-  const tplCols=hasPen?'44px repeat(4,1fr) 52px 38px':'44px repeat(4,1fr) 52px';
-  let h=`<div class="tgrid" style="grid-template-columns:${tplCols}">`;
+function draw(id){
+  var s=M[id].steps[ST[id]];
+  var total=M[id].steps.length;
+  var isModi=s.phase==='modi';
+
+  var pbar=document.getElementById('pbar-'+id);
+  var label=isModi?s.iter:'Initial solution';
+  pbar.innerHTML='<span class="pbadge '+(isModi?'pm':'pi')+'">'+label+'</span><span class="pstep">Step '+(ST[id]+1)+' / '+total+'</span>';
+
+  var fbar=document.getElementById('fbar-'+id);
+  if(isModi&&s.fml){fbar.textContent=s.fml;fbar.style.display='block';}
+  else{fbar.style.display='none';}
+
+  if(isModi) renderModi(id,s); else renderInit(id,s);
+
+  document.getElementById('snote-'+id).textContent=s.note;
+
+  var dots='';
+  for(var i=0;i<total;i++) dots+=i<=ST[id]?'\u25cf':'\u25cb';
+  document.getElementById('slbl-'+id).textContent=dots;
+
+  var ce=document.getElementById('scost-'+id);
+  if(isModi){
+    var xf=s.xfer?' &nbsp;\u00b7 Transfer: <span class="cb">'+s.xfer+'</span>':'';
+    var op=s.optimal?'<span class="optbadge">&#9733; Optimal</span>':'';
+    ce.innerHTML='TC = <span class="cb">'+s.tc+'</span>'+xf+op;
+  } else {
+    ce.innerHTML=s.cost!=null?'Running cost: <span class="cb">'+s.cost+'</span>'+(s.done?' &nbsp;&#10003; done':''):'';
+  }
+
+  var legEl=document.getElementById('leg-'+id);
+  if(isModi){
+    legEl.innerHTML='<span class="li"><span class="lb" style="background:#d1fae5;border:0.5px solid #059669"></span>Allocated</span>'+
+      '<span class="li"><span class="lb" style="background:#fef3c7;border:0.5px solid #d97706"></span>Entering cell</span>'+
+      '<span class="li"><span class="lb" style="background:#dbeafe;border:0.5px solid #3b82f6"></span>Loop (+)</span>'+
+      '<span class="li"><span class="lb" style="background:#fee2e2;border:0.5px solid #ef4444"></span>Loop (\u2212)</span>'+
+      '<span class="li" style="color:#b45309">&#9632; Positive Z</span>'+
+      '<span class="li" style="color:var(--tx3)">&#9632; Negative Z</span>';
+  } else {
+    legEl.innerHTML='<span class="li"><span class="lb" style="background:#fef3c7;border:0.5px solid #d97706"></span>Being allocated now</span>'+
+      '<span class="li"><span class="lb" style="background:#d1fae5;border:0.5px solid #059669"></span>Already allocated</span>'+
+      '<span class="li"><span class="lb" style="background:var(--bg2);border:0.5px solid var(--bd2);opacity:0.4"></span>Row / col closed</span>';
+  }
+}
+
+function renderInit(id,s){
+  var isV=id==='vam', hasPen=isV&&s.rp;
+  var cols=hasPen?'44px repeat(4,1fr) 52px 38px':'44px repeat(4,1fr) 52px';
+  var h='<div class="tgrid" style="grid-template-columns:'+cols+'">';
   h+='<div class="tgc tgh"></div>';
-  DST.forEach(d=>h+=`<div class="tgc tgh">${d}</div>`);
+  for(var j=0;j<4;j++) h+='<div class="tgc tgh">'+DST[j]+'</div>';
   h+='<div class="tgc tgh">Sup.</div>';
   if(hasPen) h+='<div class="tgc tgh" style="font-size:10px;color:#b45309">Pen.</div>';
-  for(let i=0;i<3;i++){
-    const rc=s.cr.includes(i);
-    h+=`<div class="tgc tgs${rc?' xout':''}">${SRC[i]}<br><span class="sup">${s.sup[i]}</span></div>`;
-    for(let j=0;j<4;j++){
-      const cc=s.cc.includes(j),k=`${i},${j}`;
-      const isAct=s.act&&s.act[0]===i&&s.act[1]===j;
-      const isDone=k in s.a,amt=s.a[k];
-      const fade=rc&&cc&&!isAct&&!isDone;
-      let cls='tgc'+(isAct?' xact':isDone?' xdon':'')+(fade?' xout':'');
-      h+=`<div class="${cls}"><span class="cc">${C[i][j]}</span>${isDone?`<span class="ca">${amt===0?'<span style="font-size:11px;opacity:0.5">(0)</span>':amt}</span>`:''}</div>`;
+  for(var i=0;i<3;i++){
+    var rc=s.cr.indexOf(i)>=0;
+    h+='<div class="tgc tgs'+(rc?' xout':'')+'">'+SRC[i]+'<br><span class="sup">'+s.sup[i]+'</span></div>';
+    for(var j2=0;j2<4;j2++){
+      var cc2=s.cc.indexOf(j2)>=0, k=i+','+j2;
+      var isAct=s.act&&s.act[0]===i&&s.act[1]===j2;
+      var isDone=s.a.hasOwnProperty(k), amt=s.a[k];
+      var fade=rc&&cc2&&!isAct&&!isDone;
+      var cls='tgc'+(isAct?' xact':isDone?' xdon':'')+(fade?' xout':'');
+      h+='<div class="'+cls+'"><span class="cc">'+C[i][j2]+'</span>';
+      if(isDone) h+='<span class="ca">'+(amt===0?'<span style="font-size:11px;opacity:0.5">(0)</span>':amt)+'</span>';
+      h+='</div>';
     }
-    h+=`<div class="tgc tgs${rc?' xout':''}">${s.sup[i]}</div>`;
-    if(hasPen) h+=`<div class="tgc${rc?' xout':''}" style="font-size:11px;color:#b45309;font-weight:500">${s.rp[i]!=null?s.rp[i]:'—'}</div>`;
+    h+='<div class="tgc tgs'+(rc?' xout':'')+'">'+s.sup[i]+'</div>';
+    if(hasPen) h+='<div class="tgc'+(rc?' xout':'')+'" style="font-size:11px;color:#b45309;font-weight:500">'+(s.rp[i]!=null?s.rp[i]:'&mdash;')+'</div>';
   }
   h+='<div class="tgc tgh">Dem.</div>';
-  DST.forEach((d,j)=>{const cc=s.cc.includes(j);h+=`<div class="tgc tgh${cc?' xout':''}">${s.dem[j]}</div>`;});
+  for(var j3=0;j3<4;j3++){var cc3=s.cc.indexOf(j3)>=0;h+='<div class="tgc tgh'+(cc3?' xout':'')+'">'+s.dem[j3]+'</div>';}
   h+='<div class="tgc tgh">50</div>';
   if(hasPen) h+='<div class="tgc tgh"></div>';
   if(hasPen&&s.cp){
     h+='<div class="tgc tgh" style="font-size:10px;color:#0369a1">Pen.</div>';
-    DST.forEach((d,j)=>{const cc=s.cc.includes(j);h+=`<div class="tgc${cc?' xout':''}" style="font-size:11px;color:#0369a1;font-weight:500">${s.cp[j]!=null?s.cp[j]:'—'}</div>`;});
+    for(var j4=0;j4<4;j4++){var cc4=s.cc.indexOf(j4)>=0;h+='<div class="tgc'+(cc4?' xout':'')+'" style="font-size:11px;color:#0369a1;font-weight:500">'+(s.cp[j4]!=null?s.cp[j4]:'&mdash;')+'</div>';}
     h+='<div class="tgc tgh"></div><div class="tgc tgh"></div>';
   }
   h+='</div>';
   document.getElementById('tbl-'+id).innerHTML=h;
-  document.getElementById('snote-'+id).textContent=s.note;
-  document.getElementById('slbl-'+id).textContent=`Step ${ST[id]} of ${M[id].steps.length-1}`;
-  const ce=document.getElementById('scost-'+id);
-  ce.innerHTML=s.cost!=null?`Running cost: <span class="cb">${s.cost}</span>${s.done?' &nbsp;&#10003; final':''}`:'';
 }
-['nw','lc','vam'].forEach(drawMethod);
 
-/* ───────── MODI METHOD ───────── */
-const SUP=[15,25,10],DEM=[5,15,15,15];
-const MSTEPS=[
-  {iter:'Start',lab:'NW Corner initial solution',fml:'TC = 5×10+10×2+5×7+15×9+5×20+10×18 = 520',alloc:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},U:[null,null,null],V:[null,null,null,null],Zv:{},loop:{},enter:null,tc:520,note:'Starting from the NW Corner solution (TC=520). MODI: compute dual variables U, V → check empty cells for improvement → if any positive Z, update allocation.'},
-  {iter:'Iteration 1',lab:'Compute U and V values',fml:'Allocated cells: Cᵢⱼ = Uᵢ + Vⱼ  (set U₁=0)',alloc:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},U:[0,5,3],V:[10,2,4,15],Zv:{},loop:{},enter:null,tc:520,note:'U₁=0 → V₁=10 (E,A) → V₂=2 (E,B) → U₂=5 (F,B: U₂+2=7) → V₃=4 (F,C) → V₄=15 (F,D) → U₃=3 (G,D: U₃+15=18).'},
-  {iter:'Iteration 1',lab:'Compute Z — improvement indices',fml:'Empty cells: Zᵢⱼ = Uᵢ + Vⱼ − Cᵢⱼ',alloc:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},U:[0,5,3],V:[10,2,4,15],Zv:{'0,2':-16,'0,3':4,'1,0':3,'2,0':9,'2,1':-9,'2,2':-9},loop:{},enter:[2,0],tc:520,note:'Z values: (E,C)=−16, (E,D)=+4, (F,A)=+3, (G,A)=+9★, (G,B)=−9, (G,C)=−9. Max positive Z=+9 at (G,A) → entering variable.'},
-  {iter:'Iteration 1',lab:'Trace loop — entering (G,A)',fml:'Transfer = min at (−) cells = min(5, 5, 10) = 5 units',alloc:{'0,0':5,'0,1':10,'1,1':5,'1,2':15,'1,3':5,'2,3':10},U:[0,5,3],V:[10,2,4,15],Zv:{'0,2':-16,'0,3':4,'1,0':3,'2,0':9,'2,1':-9,'2,2':-9},loop:{'2,0':'+','0,0':'-','0,1':'+','1,1':'-','1,3':'+','2,3':'-'},enter:[2,0],xfer:5,tc:520,note:'Loop: (G,A)⁺→(E,A)⁻→(E,B)⁺→(F,B)⁻→(F,D)⁺→(G,D)⁻. Transfer 5 units. Leaving cell: (E,A).'},
-  {iter:'Iteration 1 done',lab:'TC reduced to 475',fml:'TC = 15×2+0×7+15×9+10×20+5×4+5×18 = 475',alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},U:[null,null,null],V:[null,null,null,null],Zv:{},loop:{},enter:null,tc:475,note:'New solution: (E,B)=15, (F,B)=0 (degenerate, kept for m+n−1=6), (F,C)=15, (F,D)=10, (G,A)=5, (G,D)=5. Run MODI again.'},
-  {iter:'Iteration 2',lab:'Compute U and V values',fml:'Allocated cells: Cᵢⱼ = Uᵢ + Vⱼ  (set U₁=0)',alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},U:[0,5,3],V:[1,2,4,15],Zv:{},loop:{},enter:null,tc:475,note:'U₁=0 → V₂=2 (E,B) → U₂=5 (F,B) → V₃=4 (F,C) → V₄=15 (F,D) → U₃=3 (G,D) → V₁=1 (G,A: 3+V₁=4). Note V₁ changed 10→1.'},
-  {iter:'Iteration 2',lab:'Compute Z — improvement indices',fml:'Empty cells: Zᵢⱼ = Uᵢ + Vⱼ − Cᵢⱼ',alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},U:[0,5,3],V:[1,2,4,15],Zv:{'0,0':-9,'0,2':-16,'0,3':4,'1,0':-6,'2,1':-9,'2,2':-9},loop:{},enter:[0,3],tc:475,note:'Only (E,D): Z=0+15−11=+4 is positive → entering variable. All others are negative.'},
-  {iter:'Iteration 2',lab:'Trace loop — entering (E,D)',fml:'Transfer = min at (−) cells = min(10, 15) = 10 units',alloc:{'0,1':15,'1,1':0,'1,2':15,'1,3':10,'2,0':5,'2,3':5},U:[0,5,3],V:[1,2,4,15],Zv:{'0,0':-9,'0,2':-16,'0,3':4,'1,0':-6,'2,1':-9,'2,2':-9},loop:{'0,3':'+','1,3':'-','1,1':'+','0,1':'-'},enter:[0,3],xfer:10,tc:475,note:'Loop: (E,D)⁺→(F,D)⁻→(F,B)⁺→(E,B)⁻. Transfer 10 units. Leaving cell: (F,D).'},
-  {iter:'Optimal ✓',lab:'All Z ≤ 0 — optimal found',fml:'TC = 5×2+10×11+10×7+15×9+5×4+5×18 = 435',alloc:{'0,1':5,'0,3':10,'1,1':10,'1,2':15,'2,0':5,'2,3':5},U:[0,5,7],V:[-3,2,4,11],Zv:{'0,0':-13,'0,2':-16,'1,0':-10,'1,3':-4,'2,1':-5,'2,2':-5},loop:{},enter:null,tc:435,optimal:true,note:'No positive Z remains. Optimal! Routes: E→B(5), E→D(10), F→B(10), F→C(15), G→A(5), G→D(5). TC=435, improved from 520.'}
-];
-let mcur=0;
-
-function mrender(){
-  const s=MSTEPS[mcur];
-  let h=`<div class="ph"><span class="plbl">${s.lab}</span><span class="piter">${s.iter}</span><span class="pct">${mcur+1}/${MSTEPS.length}</span></div>`;
-  h+=`<div class="pfml">${s.fml}</div>`;
-  h+='<div class="tgrid2">';
-  h+='<div class="tgc2 tgh" style="font-size:10px">U \\ V</div>';
-  for(let j=0;j<4;j++){const v=s.V[j];h+=`<div class="tgc2 tgh">${DST[j]}${v!==null?`<span class="uvlbl">V=${v}</span>`:''}</div>`;}
-  h+='<div class="tgc2 tgh">Sup.</div>';
-  for(let i=0;i<3;i++){
-    const u=s.U[i];
-    h+=`<div class="tgc2 tgs">${SRC[i]}${u!==null?`<span class="uvlbl">U=${u}</span>`:''}</div>`;
-    for(let j=0;j<4;j++){
-      const k=`${i},${j}`,isA=k in s.alloc,amt=s.alloc[k];
-      const inL=k in s.loop,ls=s.loop[k];
-      const isE=s.enter&&s.enter[0]===i&&s.enter[1]===j;
-      const hasZ=k in s.Zv,zv=s.Zv[k];
-      let cls='tgc2';
+function renderModi(id,s){
+  var h='<div class="tgrid" style="grid-template-columns:56px repeat(4,1fr) 44px">';
+  h+='<div class="tgc tgh" style="font-size:10px">U \\ V</div>';
+  for(var j=0;j<4;j++){
+    var v=s.V[j];
+    h+='<div class="tgc tgh">'+DST[j]+(v!==null?'<span class="uvlbl">V='+v+'</span>':'')+'</div>';
+  }
+  h+='<div class="tgc tgh">Sup.</div>';
+  for(var i=0;i<3;i++){
+    var u=s.U[i];
+    h+='<div class="tgc tgs">'+SRC[i]+(u!==null?'<span class="uvlbl">U='+u+'</span>':'')+'</div>';
+    for(var j2=0;j2<4;j2++){
+      var k=i+','+j2;
+      var isA=s.alloc.hasOwnProperty(k), amt=s.alloc[k];
+      var inL=s.loop.hasOwnProperty(k), ls=s.loop[k];
+      var isE=s.enter&&s.enter[0]===i&&s.enter[1]===j2;
+      var hasZ=s.Zv.hasOwnProperty(k), zv=s.Zv[k];
+      var cls='tgc';
       if(isE) cls+=' xent';
       else if(inL&&ls==='+') cls+=' xlp';
       else if(inL&&ls==='-') cls+=' xlm';
       else if(isA) cls+=' xdon';
-      let inn=`<span class="cc">${C[i][j]}</span>`;
-      if(isA) inn+=`<span class="ca">${amt===0?'<span style="font-size:11px;opacity:0.5">(0)</span>':amt}</span>`;
-      else if(hasZ) inn+=`<span class="zval ${zv>0?'zpos':'zneg'}">${zv>0?'+':''}${zv}</span>`;
-      if(inL) inn+=`<span class="lbadge2 ${ls==='+'?'lp2':'lm2'}">${ls==='+'?'+':'−'}</span>`;
-      h+=`<div class="${cls}">${inn}</div>`;
+      var inn='<span class="cc">'+C[i][j2]+'</span>';
+      if(isA) inn+='<span class="ca">'+(amt===0?'<span style="font-size:11px;opacity:0.5">(0)</span>':amt)+'</span>';
+      else if(hasZ) inn+='<span class="zval '+(zv>0?'zpos':'zneg')+'">'+(zv>0?'+':'')+zv+'</span>';
+      if(inL) inn+='<span class="lbadge '+(ls==='+'?'lp':'lm')+'">'+(ls==='+'?'+':'&minus;')+'</span>';
+      h+='<div class="'+cls+'">'+inn+'</div>';
     }
-    h+=`<div class="tgc2 tgs">${SUP[i]}</div>`;
+    h+='<div class="tgc tgs">'+SUP[i]+'</div>';
   }
-  h+='<div class="tgc2 tgh">Dem.</div>';
-  DEM.forEach(d=>h+=`<div class="tgc2 tgh">${d}</div>`);
-  h+='<div class="tgc2 tgh">50</div>';
+  h+='<div class="tgc tgh">Dem.</div>';
+  for(var j3=0;j3<4;j3++) h+='<div class="tgc tgh">'+DEM[j3]+'</div>';
+  h+='<div class="tgc tgh">50</div>';
   h+='</div>';
-  h+=`<div class="snote">${s.note}</div>`;
-  h+=`<div class="sctrl"><button onclick="mgo(-1)">← Prev</button><span class="smid">${'●'.repeat(mcur+1)}${'○'.repeat(MSTEPS.length-mcur-1)}</span><button onclick="mgo(1)">Next →</button></div>`;
-  const xTxt=s.xfer?` &nbsp;· Transfer: <span class="cb">${s.xfer}</span>`:'';
-  const optTxt=s.optimal?'<span class="optbadge">★ Optimal</span>':'';
-  h+=`<div class="tclabel">TC = <span class="cb">${s.tc}</span>${xTxt}${optTxt}</div>`;
-  document.getElementById('modi-root').innerHTML=h;
+  document.getElementById('tbl-'+id).innerHTML=h;
 }
-function mgo(d){mcur=Math.max(0,Math.min(MSTEPS.length-1,mcur+d));mrender();}
-mrender();
+
+['nw','lc','vam'].forEach(function(id){draw(id);});
 </script>
 </body>
 </html>
